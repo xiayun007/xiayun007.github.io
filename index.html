@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>夏云的个人网页|样本版</title>
+    <!-- 引入免费商用字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+/* 留言板样式 */
+.message-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+.message-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.message-input,
+.message-textarea {
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--card-bg);
+  color: var(--text-color);
+}
+
+.message-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.message-btn {
+  align-self: flex-start;
+}
+
+.message-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.message-item {
+  padding: 1rem;
+  border-left: 4px solid var(--primary-color);
+  background: rgba(0,0,0,0.02);
+  border-radius: 8px;
+}
+
+.message-item .name {
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 0.3rem;
+}
+
+.message-item .time {
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 0.5rem;
+}
+.section-title {
+    color: #3b82f6 !important;
+}
+        * {
+
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+        }
+
+      :root {
+    --bg-color: #f0f4ff;
+    --text-color: #2d2b55;
+    --card-bg: #ffffff;
+    --primary-color: #7a73ff;
+    --primary-hover: #645bff;
+    --shadow: 0 4px 12px rgba(122, 115, 255, 0.1);
+    --border-color: #e0e0ff;
+    --transition: all 0.3s ease;
+}
+[data-theme="dark"] {
+    --bg-color: #121226;
+    --text-color: #e0e0ff;
+    --card-bg: #1e1e3f;
+    --primary-color: #9d8bff;
+    --primary-hover: #b3a5ff;
+    --shadow: 0 4px 12px rgba(0,0,0,0.3);
+    --border-color: #3a3a66;
+}
+
+/* 首页动漫背景 */
+.hero {
+    background: url(https://picsum.photos/id/1039/1920/1080) center/cover no-repeat;
+}
+
+        /* 渐变背景+固定定位 */
+        body {background: url(https://gd-hbimg.huaban.com/415f553f04235f4eb6ce422841c11da0e46fa7602a025-J8UKmH_fw658) center / cover fixed no-repeat !important;
+            
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: var(--transition);
+            scroll-behavior: smooth;
+            background-attachment: fixed;
+        }
+
+        /* 毛玻璃导航栏 */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: var(--transition);
+        }
+        [data-theme="dark"] nav {
+            background-color: rgba(30, 41, 59, 0.85);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: var(--transition);
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--border-color);
+        }
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: 4rem;
+    /* ↓ 换成你自己的图片 ↓ */
+    background: url(https://c-ssl.dtstatic.com/uploads/blog/202010/04/20201004204100_76dfa.thumb.1000_0.jpg) center center / cover no-repeat;
+    color: white;
+    position: relative;
+    z-index: 1;
+}
+
+
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 2rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        /* 渐变按钮 */
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+        }
+
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, #60a5fa 100%);
+            border-radius: 2px;
+        }
+
+.about-container {
+    background-color: var(--card-bg);
+    padding: 3rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: var(--transition);
+}
+
+        .about-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+       .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        /* 发光技能卡片 */
+        .skill-card {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+            transition: var(--transition);
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .skill-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3), 0 0 20px rgba(59, 130, 246, 0.2);
+        }
+
+        .skill-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .skill-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* 发光作品卡片 */
+        .project-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15), 0 0 20px rgba(59, 130, 246, 0.15);
+        }
+
+        .project-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .project-card:hover .project-img {
+            transform: scale(1.05);
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-content h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .contact-container {
+            background-color: var(--card-bg);
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .contact-item:hover {
+            background-color: var(--border-color);
+        }
+
+        .contact-item a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer {
+            background-color: var(--card-bg);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .detail-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--bg-color);
+            z-index: 9999;
+            padding: 8rem 2rem 2rem;
+            overflow-y: auto;
+        }
+
+        .detail-page.active {
+            display: block;
+        }
+
+        .detail-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .detail-back {
+            margin-bottom: 2rem;
+        }
+
+        .detail-title {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .detail-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .detail-content img {
+            width: 100%;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        /* 轮播图样式 */
+        .carousel {
+            position: relative;
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        .carousel-item {
+            display: none;
+            width: 100%;
+        }
+        .carousel-item.active {
+            display: block;
+        }
+        .carousel-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.8);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .carousel-btn.prev { left: 10px; }
+        .carousel-btn.next { right: 10px; }
+        .carousel-btn:hover { background: white; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .about-container {
+                padding: 2rem;
+            }
+
+            .detail-container {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 动态粒子背景 -->
+    <canvas id="particles" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo">我的主页</div>
+            <ul class="nav-links">
+                <li><a onclick="scrollToSection('home')">首页</a></li>
+                <li><a onclick="scrollToSection('about')">关于我</a></li>
+                <li><a onclick="scrollToSection('skills')">我的技能</a></li>
+                <li><a onclick="scrollToSection('projects')">我的作品</a></li>
+                <li><a onclick="scrollToSection('contact')">联系我</a></li>
+                <li><a onclick="scrollToSection('message')">留言板</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>hi，我是夏云，很高兴见到你~</h1>
+            <p>欢迎来到我的简历网页(请注意，以下有关技能内容皆为杜撰）</p>
+            <a onclick="scrollToSection('about')" class="btn">了解更多</a>
+        </div>
+    </section>
+
+    <section class="section" id="about">
+        <h2 class="section-title">关于我</h2>
+        <div class="about-container">
+            <div class="about-text">
+                <h3>如果你想从这些方面了解我：</h3>
+                <p>我从哪来：深圳大学传播学院！💖💖💖</p>
+                <p>已开发技能：PS、AI、剪映✌🏻️✌🏻️✌🏻️ </p>
+                <p>敬请期待(其他技能）：vibecoding、unity、python、C#</p>
+                <p>兴趣爱好：游戏阅读动画羽毛球吉他拼豆绘画all in!😄😄😄</p>
+                <p>MBTI: 完美的ENTP~</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="skills">
+        <h2 class="section-title">我的技能</h2>
+        <div class="skills-grid">
+            <div class="skill-card" onclick="openDetail('skill-html')">
+                <i>💻</i>
+                <h4>HTML/CSS</h4>
+                <p>网页制作</p>
+            </div>
+            <div class="skill-card" onclick="openDetail('skill-js')">
+                <i>⚡</i>
+                <h4>JavaScript</h4>
+                <p>交互开发</p>
+            </div>
+            <div class="skill-card" onclick="openDetail('skill-ai')">
+                <i>🤖</i>
+                <h4>AI提示词</h4>
+                <p>AI创作</p>
+            </div>
+            <div class="skill-card" onclick="openDetail('skill-ui')">
+                <i>🎨</i>
+                <h4>UI设计</h4>
+                <p>视觉设计</p>
+            </div>
+            <div class="skill-card" onclick="openDetail('skill-responsive')">
+                <i>📱</i>
+                <h4>响应式开发</h4>
+                <p>多端适配</p>
+            </div>
+            <div class="skill-card" onclick="openDetail('skill-project')">
+                <i>🚀</i>
+                <h4>项目实践</h4>
+                <p>实战开发</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="projects">
+        <h2 class="section-title">我的作品</h2>
+        <div class="projects-grid">
+            <div class="project-card" onclick="openDetail('project-aiart')">
+                <img src="https://picsum.photos/300/200?random=1" alt="AI绘画工具集" class="project-img">
+                <div class="project-content">
+                    <h3>AI绘画工具集</h3>
+                    <p>用AI生成不同风格的绘画作品，包含提示词模板和效果展示</p>
+                </div>
+            </div>
+            <div class="project-card" onclick="openDetail('project-note')">
+                <img src="https://picsum.photos/300/200?random=2" alt="个人学习笔记" class="project-img">
+                <div class="project-content">
+                    <h3>个人学习笔记</h3>
+                    <p>记录编程和AI学习的知识点，做成可交互的在线笔记</p>
+                </div>
+            </div>
+            <div class="project-card" onclick="openDetail('project-game')">
+                <img src="https://picsum.photos/300/200?random=3" alt="小游戏开发" class="project-img">
+                <div class="project-content">
+                    <h3>小游戏开发</h3>
+                    <p>用JavaScript制作简单的网页小游戏，锻炼逻辑思维</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="contact">
+        <h2 class="section-title">联系我</h2>
+        <div class="contact-container">
+            <p>欢迎通过以下方式联系我，一起交流学习！</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span>📧</span>
+                    <a href="mailto:3072657337@qq.com">3072657337@qq.com</a>
+                </div>
+                <div class="contact-item">
+                    <span>🐙</span>
+                    <a href="https://github.com/your-username" target="_blank">GitHub</a>
+                </div>
+                <div class="contact-item">
+                    <span>📱</span>
+                    <a href="https://weixin.qq.com" target="_blank">微信</a>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- 留言板模块 -->
+<section class="section" id="message">
+  <h2 class="section-title">留言板</h2>
+  <div class="message-container">
+    <div class="message-form">
+      <input type="text" id="name" placeholder="你的名字" class="message-input">
+      <textarea id="content" placeholder="说点什么吧..." class="message-textarea"></textarea>
+      <button onclick="sendMessage()" class="btn message-btn">提交留言</button>
+    </div>
+
+    <div class="message-list" id="messageList">
+      <!-- 留言会自动显示在这里 -->
+    </div>
+  </div>
+</section>
+
+    <footer>
+        <p>&copy; 2026 夏云个人主页</p>
+    </footer>
+
+    <!-- 详情页 -->
+    <div class="detail-page" id="project-aiart">
+        <div class="detail-container">
+            <div class="detail-back">
+                <button class="btn" onclick="closeDetail()">← 返回主页</button>
+            </div>
+            <h2 class="detail-title">AI绘画工具集</h2>
+            <div class="detail-content">
+                <div class="carousel">
+                    <div class="carousel-item active">
+                        <img src="https://picsum.photos/800/400?random=10" alt="AI绘画作品1">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://picsum.photos/800/400?random=14" alt="AI绘画作品2">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://picsum.photos/800/400?random=15" alt="AI绘画作品3">
+                    </div>
+                    <button class="carousel-btn prev" onclick="prevSlide()">&#10094;</button>
+                    <button class="carousel-btn next" onclick="nextSlide()">&#10095;</button>
+                </div>
+                <p>这是我用AI绘画工具制作的作品集，包含古风、赛博朋克、二次元等多种风格的绘画作品。</p>
+                <p>我总结了一套完整的AI提示词模板，从构图、色彩到细节，都能精准控制生成效果，让AI绘画更高效、更符合预期。</p>
+                <p>工具集包含：提示词生成器、风格参考库、作品管理系统，适合零基础用户快速上手AI绘画。</p>
+                <p>后续我会持续更新更多风格和提示词技巧，打造一个完整的AI绘画学习平台。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-page" id="project-note">
+        <div class="detail-container">
+            <div class="detail-back">
+                <button class="btn" onclick="closeDetail()">← 返回主页</button>
+            </div>
+            <h2 class="detail-title">个人学习笔记</h2>
+            <div class="detail-content">
+                <img src="https://picsum.photos/800/400?random=11" alt="学习笔记展示">
+                <p>这是我为自己打造的在线学习笔记系统，记录了编程、AI、设计等多个领域的知识点。</p>
+                <p>笔记支持分类管理、搜索、标签筛选，还能添加代码片段、图片、视频，让学习内容更直观、更易复习。</p>
+                <p>我用HTML、CSS、JavaScript实现了笔记的交互功能，支持深色模式、响应式布局，手机和电脑都能流畅使用。</p>
+                <p>后续我会把笔记开源，分享给更多同学，一起交流学习心得，共同进步。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-page" id="project-game">
+        <div class="detail-container">
+            <div class="detail-back">
+                <button class="btn" onclick="closeDetail()">← 返回主页</button>
+            </div>
+            <h2 class="detail-title">小游戏开发</h2>
+            <div class="detail-content">
+                <img src="https://picsum.photos/800/400?random=12" alt="小游戏展示">
+                <p>我用纯JavaScript开发了多款网页小游戏，包括贪吃蛇、打砖块、消消乐等，锻炼自己的逻辑思维和编程能力。</p>
+                <p>游戏包含完整的计分系统、关卡设计、音效特效，还支持多人对战，适合和同学一起娱乐。</p>
+                <p>我会持续优化游戏体验，添加更多关卡和玩法，打造一个属于自己的小游戏合集。</p>
+                <p>后续我会开源游戏代码，分享开发思路，让更多同学一起学习网页游戏开发。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-page" id="skill-html">
+        <div class="detail-container">
+            <div class="detail-back">
+                <button class="btn" onclick="closeDetail()">← 返回主页</button>
+            </div>
+            <h2 class="detail-title">HTML/CSS 网页制作</h2>
+            <div class="detail-content">
+                <p>我熟练掌握HTML5和CSS3的核心语法，能独立制作结构完整、样式美观的响应式网页。</p>
+                <p>精通Flexbox、Grid布局，能实现复杂的页面结构；熟练使用CSS动画、过渡效果，让网页更具交互性和视觉吸引力。</p>
+                <p>擅长网页性能优化、SEO优化，能制作符合W3C标准的高质量网页，适配各种设备和浏览器。</p>
+                <p>这个个人主页就是我用HTML/CSS制作的，完全符合现代网页设计标准，支持深色模式、响应式布局。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-page" id="skill-js">
+        <div class="detail-container">
+            <div class="detail-back">
+                <button class="btn" onclick="closeDetail()">← 返回主页</button>
+            </div>
+            <h2 class="detail-title">JavaScript 交互开发</h2>
+            <div class="detail-content">
+                <p>我熟练掌握JavaScript的核心语法，能实现网页的各种交互功能，比如：</p>
+                <ul>
+                    <li>DOM操作：动态修改网页内容、样式</li>
+                    <li>事件处理：点击、滚动、悬停等交互效果</li>
+                    <li>动画效果：平滑滚动、元素过渡、弹窗动画</li>
+                    <li>本地存储：保存用户设置（如深色模式）</li>
+                </ul>
+                <p>我用JavaScript实现了这个个人主页的所有交互功能，包括导航跳转、主题切换、卡片点击详情等。</p>
+                <p>后续我会深入学习前端框架（如Vue、React），提升自己的开发能力，制作更复杂的网页应用。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-page" id="skill-ai">
+        <div class="detail-container">
+            <div class="detail-back">
+                <button class="btn" onclick="closeDetail()">← 返回主页</button>
+            </div>
+            <h2 class="detail-title">AI提示词 工程</h2>
+            <div class="detail-content">
+                <img src="https://picsum.photos/800/400?random=13" alt="AI提示词展示">
+                <p>我精通AI提示词工程，能精准控制AI生成符合预期的内容，包括：</p>
+                <ul>
+                    <li>AI绘画提示词：风格、构图、细节、色彩的精准控制</li>
+                    <li>AI写作提示词：文案、作文、演讲稿的高质量生成</li>
+                    <li>AI代码提示词：网页、小程序、小游戏的代码生成</li>
+                    <li>AI设计提示词：UI设计、海报、logo的创意生成</li>
+                </ul>
+                <p>我总结了一套完整的提示词模板，适合零基础用户快速上手AI工具，提升创作效率。</p>
+                <p>这个个人主页的所有代码，都是我用AI提示词生成的，充分体现了我的AI提示词能力。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-page" id="skill-ui">
+        <div class="detail-container">
+            <div class="detail-back">
+                <button class="btn" onclick="closeDetail()">← 返回主页</button>
+            </div>
+            <h2 class="detail-title">UI设计 视觉设计</h2>
+            <div class="detail-content">
+                <p>我擅长UI设计，能制作美观、易用、符合用户体验的网页界面，包括：</p>
+                <ul>
+                    <li>色彩搭配：主色、辅色、中性色的合理运用</li>
+                    <li>排版设计：字体、间距、层级的优化</li>
+                    <li>交互设计：按钮、卡片、导航的交互效果</li>
+                    <li>响应式设计：适配手机、平板、电脑等各种设备</li>
+                </ul>
+                <p>我用Figma制作网页原型，再用HTML/CSS实现，保证设计稿1:1还原，视觉效果统一、专业。</p>
+                <p>这个个人主页的UI设计，就是我自己完成的，风格现代简约，符合大一学生的身份，同时兼具专业性。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-page" id="skill-responsive">
+        <div class="detail-container">
+            <div class="detail-back">
+                <button class="btn" onclick="closeDetail()">← 返回主页</button>
+            </div>
+            <h2 class="detail-title">响应式开发 多端适配</h2>
+            <div class="detail-content">
+                <p>我精通响应式网页开发，能制作适配各种设备的网页，包括手机、平板、电脑等。</p>
+                <p>使用媒体查询（Media Query）、Flexbox、Grid布局，实现网页在不同屏幕尺寸下的自动适配，保证用户体验一致。</p>
+                <p>这个个人主页就是完全响应式的，在手机上会自动调整布局，导航栏、卡片、文字都会适配屏幕，保证流畅使用。</p>
+                <p>我会持续优化响应式体验，适配更多设备，让网页在任何场景下都能完美显示。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-page" id="skill-project">
+        <div class="detail-container">
+            <div class="detail-back">
+                <button class="btn" onclick="closeDetail()">← 返回主页</button>
+            </div>
+            <h2 class="detail-title">项目实践 实战开发</h2>
+            <div class="detail-content">
+                <p>我有丰富的项目实践经验，能独立完成从需求分析、设计、开发到上线的全流程。</p>
+                <p>这个个人主页就是我的实战项目之一，从需求规划、UI设计、代码开发到交互实现，全程独立完成。</p>
+                <p>我还开发了AI绘画工具集、个人学习笔记、小游戏等多个项目，积累了大量实战经验。</p>
+                <p>后续我会持续开发更多项目，提升自己的开发能力，打造一个完整的个人作品集。</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// 留言板功能
+function sendMessage() {
+  let name = document.getElementById('name').value.trim();
+  let content = document.getElementById('content').value.trim();
+  let list = document.getElementById('messageList');
+
+  if (!name || !content) {
+    alert('请填写名字和留言内容！');
+    return;
+  }
+
+  let time = new Date().toLocaleString();
+
+  let item = document.createElement('div');
+  item.className = 'message-item';
+  item.innerHTML = `
+    <div class="name">${name}</div>
+    <div class="time">${time}</div>
+    <div>${content}</div>
+  `;
+
+  // 最新留言放最上面
+  list.insertBefore(item, list.firstChild);
+
+  // 清空输入框
+  document.getElementById('name').value = '';
+  document.getElementById('content').value = '';
+}
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        if (localStorage.getItem('theme') === 'dark') {
+            html.setAttribute('data-theme', 'dark');
+            themeToggle.textContent = '☀️';
+        }
+        themeToggle.addEventListener('click', () => {
+            const current = html.getAttribute('data-theme');
+            if (current === 'light') {
+                html.setAttribute('data-theme', 'dark');
+                themeToggle.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                html.setAttribute('data-theme', 'light');
+                themeToggle.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        function openDetail(id) {
+            document.querySelectorAll('.detail-page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(id).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDetail() {
+            document.querySelectorAll('.detail-page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.body.style.overflow = 'auto';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeDetail();
+            }
+        });
+
+        // 轮播图逻辑
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-item');
+        function showSlide(n) {
+            if (slides.length === 0) return;
+            slides.forEach(s => s.classList.remove('active'));
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        function nextSlide() { showSlide(currentSlide + 1); }
+        function prevSlide() { showSlide(currentSlide - 1); }
+
+        // 动态粒子背景
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.color = 'rgba(59, 130, 246, 0.3)';
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        const particlesArray = [];
+        for (let i = 0; i < 80; i++) {
+            particlesArray.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particlesArray.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
